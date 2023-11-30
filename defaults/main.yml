@@ -1,0 +1,6 @@
+---
+# defaults file for ansible-nginx-proxy-simple-token
+NGINX_PROXY_PORT: 8080
+NGINX_PROXY_HOST: "127.0.0.1"
+NGINX_SERVER_NAME: "_"
+NGINX_RESOLVER: "8.8.8.8"

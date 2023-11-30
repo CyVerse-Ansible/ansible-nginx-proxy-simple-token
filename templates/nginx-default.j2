@@ -1,0 +1,45 @@
+server {
+       listen 80;
+       listen [::]:80;
+
+       server_name {{ NGINX_SERVER_NAME }};
+       client_max_body_size 20G;
+
+       root /var/www/example.com;
+       index index.html;
+
+       location ~* ^/(.*) {
+          set $new_request_uri $1;
+
+          set $is_unauthorized "true";
+          if ( $arg_simple_api_token = "{{ NGINX_SIMPLE_API_TOKEN }}" ) {
+            set $is_unauthorized "false";
+          }
+
+          if ( $http_X_Simple_Api_Token = "{{ NGINX_SIMPLE_API_TOKEN }}" ) {
+            set $is_unauthorized "false";
+          }
+
+          if ( $is_unauthorized = "true" ) {
+            return 401 "Unauthorized";
+          }
+
+          if ( $new_request_uri ~ ^(?<uri_prefix>.*)simple_api_token=([a-zA-Z0-9-_\.]+)(?<uri_suffix>.*)$ ) {
+            set $new_request_uri $uri_prefix$uri_suffix;
+          }
+
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-NginX-Proxy true;
+          proxy_ssl_session_reuse off;
+          proxy_ssl_verify off;
+          # proxy_set_header Host $http_host;
+          # proxy_cache_bypass $http_upgrade;
+          proxy_redirect off;
+          proxy_buffer_size 8k;
+
+          resolver {{ NGINX_RESOLVER }};
+
+          proxy_pass http://{{ NGINX_PROXY_HOST }}:{{ NGINX_PROXY_PORT }}/$new_request_uri;
+       }
+}

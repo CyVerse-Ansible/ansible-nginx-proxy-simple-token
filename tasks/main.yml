@@ -1,0 +1,13 @@
+---
+- name: install nginx for Ubuntu
+  apt:
+    name: nginx
+    state: latest
+    update_cache: yes
+
+- name: TEMPLATE; install new default template
+  ansible.builtin.template:
+    src: "nginx-default.j2"
+    dest: "/etc/nginx/sites-enabled/default"
+  notify:
+    - Restart nginx
