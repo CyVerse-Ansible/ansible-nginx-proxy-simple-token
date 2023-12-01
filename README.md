@@ -16,6 +16,7 @@ NGINX_PROXY_HOST, default "127.0.0.1"
 NGINX_SERVER_NAME, default "_"
 NGINX_SIMPLETOKEN, no default
 NGINX_RESOLVER, default 8.8.8.8
+NGINX_SIMPLETOKEN_KEY: "simpletoken"
 NGINX_WHITELIST:
 
 Dependencies

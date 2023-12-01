@@ -17,11 +17,11 @@ server {
           set $new_request_uri $1;
 
           set $is_unauthorized "true";
-          if ( $arg_simpletoken = "{{ NGINX_SIMPLETOKEN }}" ) {
+          if ( $arg_{{ NGINX_SIMPLETOKEN_KEY | lower }} = "{{ NGINX_SIMPLETOKEN }}" ) {
             set $is_unauthorized "false";
           }
 
-          if ( $http_X_SimpleToken = "{{ NGINX_SIMPLETOKEN }}" ) {
+          if ( $http_X_{{ NGINX_SIMPLETOKEN_KEY }} = "{{ NGINX_SIMPLETOKEN }}" ) {
             set $is_unauthorized "false";
           }
 
@@ -34,7 +34,7 @@ server {
             return 401 "Unauthorized";
           }
 
-          if ( $new_request_uri ~ ^(?<uri_prefix>.*)simpletoken=([a-zA-Z0-9-_\.]+)(?<uri_suffix>.*)$ ) {
+          if ( $new_request_uri ~ ^(?<uri_prefix>.*){{ {{ NGINX_SIMPLETOKEN_KEY | lower }}=([a-zA-Z0-9-_\.]+)(?<uri_suffix>.*)$ ) {
             set $new_request_uri $uri_prefix$uri_suffix;
           }
 
