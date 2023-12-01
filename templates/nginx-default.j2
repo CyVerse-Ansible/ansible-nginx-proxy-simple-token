@@ -34,7 +34,7 @@ server {
             return 401 "Unauthorized";
           }
 
-          if ( $new_request_uri ~ ^(?<uri_prefix>.*){{ {{ NGINX_SIMPLETOKEN_KEY | lower }}=([a-zA-Z0-9-_\.]+)(?<uri_suffix>.*)$ ) {
+          if ( $new_request_uri ~ ^(?<uri_prefix>.*){{ NGINX_SIMPLETOKEN_KEY | lower }}=([a-zA-Z0-9-_\.]+)(?<uri_suffix>.*)$ ) {
             set $new_request_uri $uri_prefix$uri_suffix;
           }
 
