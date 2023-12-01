@@ -1,3 +1,8 @@
+geo $is_safe_ip {
+    default         0;
+    127.0.0.1       1;
+}
+
 server {
        listen 80;
        listen [::]:80;
@@ -12,11 +17,16 @@ server {
           set $new_request_uri $1;
 
           set $is_unauthorized "true";
-          if ( $arg_simple_api_token = "{{ NGINX_SIMPLE_API_TOKEN }}" ) {
+          if ( $arg_simpletoken = "{{ NGINX_SIMPLETOKEN }}" ) {
             set $is_unauthorized "false";
           }
 
-          if ( $http_X_Simple_Api_Token = "{{ NGINX_SIMPLE_API_TOKEN }}" ) {
+          if ( $http_X_SimpleToken = "{{ NGINX_SIMPLETOKEN }}" ) {
+            set $is_unauthorized "false";
+          }
+
+          # revert to false if the request is coming from a safe ip address
+          if ( $is_safe_ip = "1" ) {
             set $is_unauthorized "false";
           }
 
@@ -24,7 +34,7 @@ server {
             return 401 "Unauthorized";
           }
 
-          if ( $new_request_uri ~ ^(?<uri_prefix>.*)simple_api_token=([a-zA-Z0-9-_\.]+)(?<uri_suffix>.*)$ ) {
+          if ( $new_request_uri ~ ^(?<uri_prefix>.*)simpletoken=([a-zA-Z0-9-_\.]+)(?<uri_suffix>.*)$ ) {
             set $new_request_uri $uri_prefix$uri_suffix;
           }
 

@@ -14,8 +14,9 @@ Role Variables
 NGINX_PROXY_PORT, default 8080
 NGINX_PROXY_HOST, default "127.0.0.1"
 NGINX_SERVER_NAME, default "_"
-NGINX_SIMPLE_API_TOKEN, no default
+NGINX_SIMPLETOKEN, no default
 NGINX_RESOLVER, default 8.8.8.8
+NGINX_WHITELIST:
 
 Dependencies
 ------------
