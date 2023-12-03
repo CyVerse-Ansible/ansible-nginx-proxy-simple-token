@@ -15,3 +15,59 @@
     dest: "/etc/nginx/sites-enabled/default"
   notify:
     - Restart nginx
+
+- block:
+  - name: COPY; create the token file in NGINX_TOKEN_PATH
+    ansible.builtin.copy:
+      content: |
+        {{ NGINX_API_TOKEN }}
+      dest: "{{ NGINX_TOKEN_PATH }}"
+      mode: 0644
+
+  - name: COPY; create an motd with token value 
+    ansible.builtin.copy:
+      dest: "/etc/motd"
+      mode: 0644
+      content: |
+        Welcome!
+
+        HTTP Token: {{ NGINX_API_TOKEN }}
+        Token is also stored in {{ NGINX_TOKEN_PATH }}
+
+        HTTP service is running at {{ PROXY_PUBLIC_ENDPOINT }}
+
+        An example on how to access vllm api using curl with token in query param:
+
+          curl {{ NGINX_PUBLIC_ENDPOINT }}?simpletoken={{ NGINX_API_TOKEN }}
+        
+        An example on how to access vllm api using curl with token in header:
+
+          curl -H "x-simpletoken:{{ NGINX_API_TOKEN }}" {{ NGINX_PUBLIC_ENDPOINT }}
+
+  when: NGINX_API_OR_APP == "api"
+
+- block:
+  - name: COPY; create the token file in NGINX_USERPASS_PATH
+    ansible.builtin.copy:
+      content: |
+        {{ PROXY_AUTH_USER }} {{ PROXY_AUTH_PASS}}
+      dest: "{{ NGINX_USERPASS_PATH }}"
+      mode: 0644
+
+  - name: COPY; create an motd with token value 
+    ansible.builtin.copy:
+      dest: "/etc/motd"
+      mode: 0644
+      content: |
+        Welcome!
+
+        HTTP User: {{ PROXY_AUTH_USER }}
+        HTTP Pass: {{ PROXY_AUTH_PASS}}
+        Token is also stored in  {{ NGINX_USERPASS_PATH }}
+
+        {%- if PROXY_PUBLIC_ENDPOINT is defined and PROXY_PUBLIC_ENDPOINT != "" -%}
+        HTTP service is running at {{ PROXY_PUBLIC_ENDPOINT }}
+
+        {%- endif -%}
+
+  when: NGINX_API_OR_APP == "app"

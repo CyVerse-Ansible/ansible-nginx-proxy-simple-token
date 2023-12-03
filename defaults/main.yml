@@ -6,4 +6,9 @@ NGINX_SERVER_NAME: "_"
 NGINX_RESOLVER: "8.8.8.8"
 
 # it's probably better to uppercase the first letters
-NGINX_SIMPLE_TOKEN_KEY: "SimpleToken"
+NGINX_API_OR_APP: "api"
+NGINX_SIMPLETOKEN_KEY: "SimpleToken"
+
+# location of the token
+NGINX_TOKEN_PATH: /opt/proxy-api-token.txt
+NGINX_USERPASS_PATH: /opt/proxy-userpass.txt
