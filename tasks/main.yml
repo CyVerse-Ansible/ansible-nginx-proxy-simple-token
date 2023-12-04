@@ -34,23 +34,23 @@
         HTTP Token: {{ NGINX_API_TOKEN }}
         Token is also stored in {{ NGINX_TOKEN_PATH }}
 
-        HTTP service is running at {{ PROXY_PUBLIC_ENDPOINT }}
+        HTTP service is running at {{ NGINX_PUBLIC_ENDPOINT }}
 
-        An example on how to access vllm api using curl with token in query param:
+        An example on how to access an api using curl in query param:
 
-          curl {{ NGINX_PUBLIC_ENDPOINT }}?simpletoken={{ NGINX_API_TOKEN }}
+          curl {{ NGINX_PUBLIC_ENDPOINT }}?{{ NGINX_API_TOKEN_KEY | lower }}={{ NGINX_API_TOKEN }}
         
-        An example on how to access vllm api using curl with token in header:
+        An example on how to access api using curl with token in header:
 
-          curl -H "x-simpletoken:{{ NGINX_API_TOKEN }}" {{ NGINX_PUBLIC_ENDPOINT }}
+          curl -H "X-{{ NGINX_API_TOKEN_KEY }}:{{ NGINX_API_TOKEN }}" {{ NGINX_PUBLIC_ENDPOINT }}
 
-  when: NGINX_API_OR_APP == "api"
+  when: NGINX_AUTH_TYPE == "apitoken"
 
 - block:
   - name: COPY; create the token file in NGINX_USERPASS_PATH
     ansible.builtin.copy:
       content: |
-        {{ PROXY_AUTH_USER }} {{ PROXY_AUTH_PASS}}
+        {{ NGINX_AUTH_USER }} {{ NGINX_AUTH_PASS }}
       dest: "{{ NGINX_USERPASS_PATH }}"
       mode: 0644
 
@@ -61,13 +61,13 @@
       content: |
         Welcome!
 
-        HTTP User: {{ PROXY_AUTH_USER }}
-        HTTP Pass: {{ PROXY_AUTH_PASS}}
+        HTTP User: {{ NGINX_AUTH_USER }}
+        HTTP Pass: {{ NGINX_AUTH_PASS}}
         Token is also stored in  {{ NGINX_USERPASS_PATH }}
 
-        {%- if PROXY_PUBLIC_ENDPOINT is defined and PROXY_PUBLIC_ENDPOINT != "" -%}
-        HTTP service is running at {{ PROXY_PUBLIC_ENDPOINT }}
+        {%- if NGINX_PUBLIC_ENDPOINT is defined and NGINX_PUBLIC_ENDPOINT != "" -%}
+        HTTP service is running at {{ NGINX_PUBLIC_ENDPOINT }}
 
         {%- endif -%}
 
-  when: NGINX_API_OR_APP == "app"
+  when: NGINX_AUTH_TYPE == "basicauth"

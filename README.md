@@ -15,7 +15,7 @@ NGINX_PROXY_PORT, default 8080
 NGINX_PROXY_HOST, default "127.0.0.1"
 NGINX_SERVER_NAME, default "_"
 NGINX_RESOLVER, default 8.8.8.8
-NGINX_API_OR_APP: true
+NGINX_AUTH_TYPE: "apitoken" # "basicauth"
 NGINX_API_TOKEN_KEY: "SimpleToken"
 NGINX_API_TOKEN, ""
 NGINX_PUBLIC_ENDPOINT: ""
