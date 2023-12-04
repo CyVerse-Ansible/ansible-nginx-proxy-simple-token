@@ -1,0 +1,48 @@
+geo $is_safe_ip {
+    default         0;
+    127.0.0.1       1;
+}
+map $http_upgrade $connection_upgrade {
+  default upgrade;
+  ''      close;
+}
+server {
+       listen 80;
+       listen [::]:80;
+
+       server_name {{ NGINX_SERVER_NAME }};
+       client_max_body_size 20G;
+
+       root /var/www/html;
+       index index.html;
+
+       location ~* ^/(.*) {
+
+          auth_basic "{{ NGINX_BASICAUTH_TITLE }}";
+          auth_basic_user_file {{ NGINX_BASICAUTH_PASSWORD_FILE }};
+
+          # revert to false if the request is coming from a safe ip address
+          # if ( $is_safe_ip = "1" ) {
+          #   set $is_unauthorized "false";
+          # }
+
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-NginX-Proxy true;
+          proxy_ssl_session_reuse off;
+          proxy_ssl_verify off;
+          # proxy_set_header Host $http_host;
+          # proxy_cache_bypass $http_upgrade;
+          proxy_redirect off;
+          proxy_buffer_size 8k;
+
+          resolver {{ NGINX_RESOLVER }};
+
+          proxy_pass $scheme://{{ NGINX_PROXY_HOST }}:{{ NGINX_PROXY_PORT }}$request_uri;
+
+          # Websocket support (is this ok for all requests?)
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+       }
+}

@@ -13,3 +13,7 @@ NGINX_API_TOKEN_KEY: "SimpleApiToken"
 NGINX_TOKEN_PATH: /opt/proxy-api-token.txt
 NGINX_USERPASS_PATH: /opt/proxy-userpass.txt
 NGINX_PUBLIC_ENDPOINT: ""
+
+NGINX_AUTH_USER: "myappuser"
+NGINX_BASICAUTH_TITLE: "Restricted"
+NGINX_BASICAUTH_PASSWORD_FILE: "/opt/nginx-htpasswd"

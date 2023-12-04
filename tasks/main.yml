@@ -1,17 +1,27 @@
 ---
 - name: install nginx for Ubuntu
   apt:
-    name: nginx
+    name: 
+    - nginx
+    - apache2-utils
     state: latest
     update_cache: yes
   register: apt_result
   until: apt_result is not failed
   retries: 30
   delay: 10
-  
+
+- name: HTPASSWD; add NGINX_AUTH_USER
+  community.general.htpasswd:
+    path: "{{ NGINX_BASICAUTH_PASSWORD_FILE }}"
+    name: "{{ NGINX_AUTH_USER}}"
+    password: "{{ NGINX_AUTH_PASS }}"
+    mode: 0666
+
+
 - name: TEMPLATE; install new default template
   ansible.builtin.template:
-    src: "nginx-default.j2"
+    src: "nginx-default-{{ NGINX_AUTH_TYPE }}.j2"
     dest: "/etc/nginx/sites-enabled/default"
   notify:
     - Restart nginx
