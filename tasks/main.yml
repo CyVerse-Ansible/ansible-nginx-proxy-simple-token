@@ -1,5 +1,5 @@
 ---
-- name: install nginx for Ubuntu
+- name: APT; install nginx for Ubuntu
   apt:
     name: 
     - nginx
@@ -10,6 +10,18 @@
   until: apt_result is not failed
   retries: 30
   delay: 10
+
+- name: PIP; upgrade pip
+  pip:
+    name: pip
+    state: latest
+    executable: pip3
+
+- name: PIP; upgrade other dependencies
+  pip:
+    name: passlib
+    state: latest
+    executable: pip3
 
 - name: HTPASSWD; add NGINX_AUTH_USER
   community.general.htpasswd:
