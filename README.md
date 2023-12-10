@@ -22,6 +22,7 @@ NGINX_PUBLIC_ENDPOINT: ""
 NGINX_AUTH_USER: "myappuser"
 NGINX_AUTH_PASS: ""
 NGINX_BASICAUTH_TITLE: "Restricted"
+NGINX_504_LOGPATH: no default, if defined will replace 504
 
 NGINX_WHITELIST:
 

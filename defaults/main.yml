@@ -17,3 +17,9 @@ NGINX_PUBLIC_ENDPOINT: ""
 NGINX_AUTH_USER: "myappuser"
 NGINX_BASICAUTH_TITLE: "Restricted"
 NGINX_BASICAUTH_PASSWORD_FILE: "/opt/nginx-htpasswd"
+
+NGINX_ERROR_HTML_DIR: "/var/www/html/error"
+
+# if provided, it will expose logs via web
+NGINX_APP_LOG_FILES: []
+NGINX_APP_LOG_HTML_DIR: "/var/www/html/logs"

@@ -16,7 +16,22 @@ server {
        root /var/www/example.com;
        index index.html;
 
-       location ~* ^/(.*) {
+       error_page 502 /error/502.html;
+
+       location /error/ {
+          root /var/www/html;
+       }
+{% if NGINX_APP_LOG_FILES|length > 0 -%}
+       location /logs/ {
+          root /var/www/html;
+          types {
+            text/plain log;
+          }
+          autoindex on;
+       }
+{% endif -%}
+
+       location / {
           set $new_request_uri $1;
 
           set $is_unauthorized "true";

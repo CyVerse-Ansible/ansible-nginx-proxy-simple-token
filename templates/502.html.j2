@@ -1,0 +1,10 @@
+<html>
+        <head><title>Service not yet ready or unavailable</title></head>
+<body>
+If you are seeing this page, the service is not yet ready or currently unavailable.
+
+{% if NGINX_APP_LOG_FILES|length > 0 %}
+To see the exposed logs for this service, follow this link <a href="/logs/">logs</a>.
+{% endif %}
+</body>
+</html>
