@@ -22,7 +22,15 @@ server {
           root /var/www/html;
        }
 {% if NGINX_APP_LOG_FILES|length > 0 -%}
+       # including both so that we don't need to remember
        location /logs/ {
+          root /var/www/html;
+          types {
+            text/plain log;
+          }
+          autoindex on;
+       }
+       location /log/ {
           root /var/www/html;
           types {
             text/plain log;
