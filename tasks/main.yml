@@ -63,7 +63,7 @@
     ignore_errors: true
 
   - name: SHELL; create a symbolic link
-    shell: ln -s "{{ item }}" "{{ item | basename }}"
+    shell: "ln -s {{ item }} {{ item | basename }}"
     args:
       chdir: "{{ NGINX_APP_LOG_HTML_DIR }}"
     loop: "{{ NGINX_APP_LOG_FILES }}"
