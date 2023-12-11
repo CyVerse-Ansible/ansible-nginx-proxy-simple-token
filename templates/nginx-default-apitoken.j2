@@ -30,12 +30,8 @@ server {
           }
           autoindex on;
        }
-       location /log/ {
-          root /var/www/html;
-          types {
-            text/plain log;
-          }
-          autoindex on;
+       location ~* ^/log/(.*)$ {
+          return 301 /logs/$1;
        }
 {% endif -%}
 

@@ -34,15 +34,8 @@ server {
           }
           autoindex on;
        }
-       location /log/ {
-          auth_basic "{{ NGINX_BASICAUTH_TITLE }}";
-          auth_basic_user_file {{ NGINX_BASICAUTH_PASSWORD_FILE }};
-
-          root /var/www/html;
-          types {
-            text/plain log;
-          }
-          autoindex on;
+       location ~* ^/log/(.*)$ {
+          return 301 /logs/$1;
        }
 {% endif -%}
 
