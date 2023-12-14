@@ -1,16 +1,95 @@
 <html>
-        <head>
-        <meta http-equiv='refresh' content='5'>
-        <title>Service not yet ready or unavailable</title></head>
-<body>
-<p>
-If you are seeing this page, the service is not yet ready or currently unavailable. This page will automatically refresh every 5 seconds until the service is available.
-</p>
+<head>
+  <meta http-equiv='refresh' content='5'>
+  <title>Service not yet ready or unavailable</title>
+  <style>
+    body {
+      background-color: #e2e2e2;
+      margin-top: 1rem;
+      padding: 2rem;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-{% if NGINX_APP_LOG_FILES|length > 0 %}
-<p>
-To see the exposed logs for this service, follow this link <a href="/logs/">logs</a>.
-</p>
-{% endif %}
+    .main {
+      padding: 2rem;
+      background-color: white;
+      border-radius: 5px;
+      align-content: center;
+      margin: 0 auto;
+      max-width: 1050px;
+      min-width: 400px;
+    }
+
+    .iframe {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 400px;
+    }
+
+    .gray {
+      color: #303030;
+    }
+
+    .center {
+      text-align: center;
+      margin: 0 atuo;
+    }
+
+    .shadow {
+      box-shadow: 2px 2px 5px #909090
+    }
+
+    .btn {
+      background-color: #0971ab;
+      padding: .3rem;
+      border-radius: 5px;
+      color: white;
+      text-align: center;
+      width: 235px;
+      margin: 0 auto;
+    }
+
+    .btn:hover {
+      background-color: #054161;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    h1 {
+      font-size: 3rem;
+    }
+
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="main shadow">
+    <h1 class="gray center">Service Not Currently Available</h1>
+    <h2 class="gray center">Error Code 502</h2>
+    <div class="iframe">
+      <div>
+        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
+        <dotlottie-player src="https://lottie.host/67a0e1fb-35e3-4d2a-b860-a07aaa76503c/8mtBB8DRPw.json" background="transparent" speed="1" style="width: 400px; height: 400px;" loop autoplay></dotlottie-player>
+      </div>
+    </div>
+    <p class="center gray">
+      If you are seeing this page, the service is not yet ready or currently unavailable. This page will automatically refresh every 5 seconds until the service is available.
+    </p>
+    {% if NGINX_APP_LOG_FILES|length > 0 %}
+    <div>
+      <p class="center gray">
+        To see the exposed logs for this service, please select below.</p>
+      <a target="_blank" href="/logs/">
+        <div class="btn center"> View Exposed Service Logs</div>
+      </a>
+    </div>
+    {% endif %}
+  </div>
 </body>
 </html>
