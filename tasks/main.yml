@@ -51,7 +51,14 @@
   ansible.builtin.template:
     src: "502.html.j2"
     dest: "{{ NGINX_ERROR_HTML_DIR }}/502.html"
+    mode: 0644
 
+- name: COPY; install custom 502 gif
+  ansible.builtin.copy:
+    src: "502anim.gif"
+    dest: "{{ NGINX_ERROR_HTML_DIR }}/502anim.gif"
+    mode: 0644
+    
 # this block will expose log files via web
 # but will ignore errors if they are not found
 - block:
